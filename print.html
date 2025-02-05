@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <title>Печать</title>
     <script>
-        window.onload = function () {
+        function printOrder() {
             const urlParams = new URLSearchParams(window.location.search);
             let text = urlParams.get('text') || "Ошибка передачи данных";
 
-            // Кодируем текст
-            text = encodeURIComponent(text);
+            // ✅ Декодируем текст, чтобы убрать символы "РЎРѕР»СЏРЅРєР°"
+            text = decodeURIComponent(text);
 
-            // Открываем RawBT с текстом
+            // ✅ Открываем RawBT с правильным текстом
             window.location.href = "rawbt://print?text=" + text;
-        };
+        }
+
+        window.onload = printOrder;
     </script>
 </head>
 <body>
-    <h1>Отправка на печать...</h1>
+    <h1>Отправка заказа на печать...</h1>
 </body>
 </html>
