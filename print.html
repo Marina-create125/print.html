@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Печать</title>
+    <script>
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            let text = urlParams.get('text') || "Ошибка передачи данных";
+
+            // Кодируем текст
+            text = encodeURIComponent(text);
+
+            // Открываем RawBT с текстом
+            window.location.href = "rawbt://print?text=" + text;
+        };
+    </script>
+</head>
+<body>
+    <h1>Отправка на печать...</h1>
+</body>
+</html>
