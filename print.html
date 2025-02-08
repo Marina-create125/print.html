@@ -1,24 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Печать</title>
-    <script>
-        function printOrder() {
-            const urlParams = new URLSearchParams(window.location.search);
-            let text = urlParams.get('text') || "Ошибка передачи данных";
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
-            // ✅ Декодируем текст, чтобы убрать символы "РЎРѕР»СЏРЅРєР°"
-            text = decodeURIComponent(text);
+public class PrintOrder {
 
-            // ✅ Открываем RawBT с правильным текстом
-            window.location.href = "rawbt://print?text=" + text;
+    public static void printRawBT(String encodedText) {
+        try {
+            // Декодируем URL-encoded текст
+            String decodedText = URLDecoder.decode(encodedText, "UTF-8");
+
+            // Создаём Intent для отправки в RawBT
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setPackage("ru.a402d.rawbtprinter"); // Пакет RawBT
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, decodedText);
+            
+            // Отправляем Intent
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            MyApplication.getAppContext().startActivity(intent);
+
+        } catch (UnsupportedEncodingException e) {
+            Log.e("PrintOrder", "Ошибка декодирования текста", e);
         }
-
-        window.onload = printOrder;
-    </script>
-</head>
-<body>
-    <h1>Отправка заказа на печать...</h1>
-</body>
-</html>
+    }
+}
